@@ -1,0 +1,20 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 30px;
+    margin-bottom: 10px;
+}
+.logo{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+}
+.logo_title{
+    font-size: 28px;
+}
+.add_btn{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

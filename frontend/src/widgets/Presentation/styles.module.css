@@ -1,0 +1,12 @@
+.card{
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 20px;
+    width: 200px;
+}
+
+.createdAt{
+    display: flex;
+    gap: 3px;
+    align-items: center;
+}
