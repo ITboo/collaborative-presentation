@@ -5,7 +5,3 @@
     createdAt: string;
     updatedAt?: string;
   }
-
-  export interface PresentationList{
-    presentations: Presentation[]
-  }

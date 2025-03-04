@@ -1,24 +1,21 @@
+import { Link } from "react-router-dom";
 import { Icon } from "../../shared/Icon";
 import type { Presentation } from "../../app/types";
 import styles from "./styles.module.css";
-import { Link } from "react-router-dom";
 
 const Presentation = ({ id, title, createdBy, createdAt }: Presentation) => {
   return (
     <div className={styles.card}>
-      <h2>{title}</h2>
-      <p>by {createdBy}</p>
-      <div className={styles.createdAt}>
-        <Icon name={"clock"} />
-        <span>Created: {createdAt}</span>
-      </div>
+        <p className={styles.participants}><Icon name="user"/> 5</p>
+<h2 className={styles.title}>{title}</h2>
+      <div className={styles.details}>
+        <p className={styles.date}>Дата создания: {createdAt}</p>
+        <p className={styles.author}>by {createdBy}</p>
 
-      <div>
-        <Icon name={"user"}/>
-        <span></span>
       </div>
-
-      <Link to={`/presentations/${id}`}>Join</Link>
+      <Link to={`/presentations/${id}`}>
+        <button>Join</button>
+      </Link>
     </div>
   );
 };
