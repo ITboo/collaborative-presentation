@@ -1,32 +1,88 @@
 import Presentation from "../Presentation";
 import { useAppStore, useModalStore } from "../../app/store/store";
 import styles from "./styles.module.css";
+import { useEffect, useState } from "react";
 
 const PresentationList = () => {
-  const presentations = useAppStore((state) => state.presentations);
-  const { isModalOpen, closeModal } = useModalStore();
+  const { presentations, loading, error, fetchPresentations, addPresentation } =
+    useAppStore();
+
+  const isModalOpen = useModalStore((state) => state.modals.createPresentation);
+  const closeModal = useModalStore((state) => state.closeModal);
+  const [title, setTitle] = useState("");
+  const [createdBy, setCreatedBy] = useState("");
+  
+  useEffect(() => {
+    fetchPresentations();
+  }, []);
+
+  if (loading) {
+    return <div className={styles.loading}>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div className={styles.error}>Ошибка: {error}</div>;
+  }
+
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
-      closeModal();
+      closeModal("createPresentation");
     }
   };
+
+  const handleAddPresentation = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!title || !createdBy === undefined) {
+      alert("Все поля обязательны");
+      return;
+    }
+
+    const newPresentation = {
+      id: (presentations.length + 1).toString(),
+      createdAt: Date.now().toString(),
+      title,
+      createdBy,
+    };
+
+    await addPresentation(newPresentation); // Добавляем презентацию через Zustand
+    console.log(newPresentation);
+    setTitle("");
+    setCreatedBy("");
+    closeModal("createPresentation");
+  };
+
   return (
     <div className={styles.list}>
       {/* Модальное окно */}
       {isModalOpen && (
         <div className={styles.modal} onClick={handleBackdropClick}>
-          <div className={styles.modalContent}>
-          <h2>Добавить презентацию</h2>
-          <div>
-            <label>Название:</label>
-            <input type="text" />
-          </div>
-          <div>
-            <label>Автор:</label>
-            <input type="text" />
-          </div>
-          <button>Добавить</button>
-          <button onClick={closeModal}>Отмена</button></div>
+          <form
+            className={styles.modalContent}
+            onSubmit={handleAddPresentation}
+          >
+            <h2>Добавить презентацию</h2>
+            <div>
+              <label>Название:</label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div>
+              <label>Автор:</label>
+              <input
+                type="text"
+                value={createdBy}
+                onChange={(e) => setCreatedBy(e.target.value)}
+              />
+            </div>
+            <button type="submit">Добавить</button>
+            <button onClick={() => closeModal("createPresentation")}>
+              Отмена
+            </button>
+          </form>
         </div>
       )}
       {presentations.map((presentation) => (

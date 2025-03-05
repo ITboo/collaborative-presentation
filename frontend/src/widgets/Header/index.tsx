@@ -11,9 +11,9 @@ const Header = () => {
         <Icon name={"logo"} />
         <span className={styles.logo_title}>Collaborative</span>
       </Link>
-      <button className={styles.add_btn} onClick={openModal}>
+      <button className={styles.add_btn} onClick={()=>openModal('createPresentation')}>
         <Icon name={"plus"} />
-        Create presentation
+        Создать презентацию
       </button>
     </header>
   );
